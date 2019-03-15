@@ -1,18 +1,22 @@
 var mapa;
 var CLIMA_TEMPO_TOKEN = 'bae772a8c76b488cd2b8971dc5a7e0c8';
 
+
 var Mapas = function (data) {
-  var self = this;
+    var self = this;
 
-  this.nome = ko.observable(data.nome);
-  this.lat = ko.observable(data.lat);
-  this.lng = ko.observable(data.lng);
-  this.estadoMarcador = ko.observable(true);
-  this.condicaoTempo = ko.observable();
-  this.temperatura = ko.observable();
+    this.nome = ko.observable(data.nome);
+    this.lat = ko.observable(data.lat);
+    this.lng = ko.observable(data.lng);
+    this.estadoMarcador = ko.observable(true);
+    this.condicaoTempo = ko.observable();
+    this.temperatura = ko.observable();
 
-    var climatempoURL = 'http://apiadvisor.climatempo.com.br/api/v1/weather/locale/4818/current?token='+ CLIMA_TEMPO_TOKEN +'';
-    ko.computed(function() {
+    /*
+    Realiza busca na API do Clima Tempo, mostrando ao usuário, a condição climática e a temperatura.
+    */
+    var climatempoURL = 'http://apiadvisor.climatempo.com.br/api/v1/weather/locale/4818/current?token=' + CLIMA_TEMPO_TOKEN + '';
+    ko.computed(function () {
         $.ajax(climatempoURL, {
             success: function (data) {
                 var resultado = data.data;
@@ -20,31 +24,31 @@ var Mapas = function (data) {
                 self.temperatura = resultado.temperature;
             }
         }).done(function () {
-            self.conteudoInformacaoEscola = "<h5>" + self.nome() +"</h5><br/>" +
-                                            "<p style='font-size: 18px'>" + self.condicaoTempo +"</p>" +
-                                            "<p style='font-size: 18px'>" + "Temperatura: "+ self.temperatura + " Graus"+"</p>";
+            self.conteudoInformacaoEscola = "<h5>" + self.nome() + "</h5><br/>" +
+                "<p style='font-size: 18px'>" + self.condicaoTempo + "</p>" +
+                "<p style='font-size: 18px'>" + "Temperatura: " + self.temperatura + " Graus" + "</p>";
         }).fail(function () {
             alert("erro")
         });
     }, this);
 
-  this.marcador = new google.maps.Marker({
-      position: new google.maps.LatLng(data.lat, data.lng),
-      map: mapa,
-      title: data.nome,
-      animation: google.maps.Animation.DROP
-  });
+    this.marcador = new google.maps.Marker({
+        position: new google.maps.LatLng(data.lat, data.lng),
+        map: mapa,
+        title: data.nome,
+        animation: google.maps.Animation.DROP
+    });
 
 
-  this.informacaoEscola = new google.maps.InfoWindow({content: self.conteudoInformacaoEscola});
+    this.informacaoEscola = new google.maps.InfoWindow({content: self.conteudoInformacaoEscola});
 
-  this.marcador.addListener('click', function () {
-      self.informacaoEscola.setContent(self.conteudoInformacaoEscola);
-      self.informacaoEscola.open(mapa, this);
-  });
+    this.marcador.addListener('click', function () {
+        self.informacaoEscola.setContent(self.conteudoInformacaoEscola);
+        self.informacaoEscola.open(mapa, this);
+    });
 
-    this.mostraMarcadorInstituicao = ko.computed(function() {
-        if(this.estadoMarcador() === true) {
+    this.mostraMarcadorInstituicao = ko.computed(function () {
+        if (this.estadoMarcador() === true) {
             this.marcador.setMap(mapa);
         } else {
             this.marcador.setMap(null);
@@ -54,7 +58,9 @@ var Mapas = function (data) {
 
 };
 
-
+/*
+ViewModel da aplicação, contém as funcionalidades que trabalham diretamente com o frontend da aplicação
+*/
 function MapaViewModel() {
     var self = this;
 
@@ -73,15 +79,15 @@ function MapaViewModel() {
 
     self.listaInstituicaoFiltrada = self.listaInstituicoesEnsino;
 
-    self.filtraInstituicoes = ko.computed(function() {
+    self.filtraInstituicoes = ko.computed(function () {
         var filter = self.consultaInstituicao().toLowerCase();
         if (!filter) {
-            self.listaInstituicaoFiltrada().forEach(function(instituicaoEnsino){
+            self.listaInstituicaoFiltrada().forEach(function (instituicaoEnsino) {
                 instituicaoEnsino.estadoMarcador(true);
             });
             return self.listaInstituicaoFiltrada();
         } else {
-            return ko.utils.arrayFilter(self.listaInstituicaoFiltrada(), function(instituicaoEnsino) {
+            return ko.utils.arrayFilter(self.listaInstituicaoFiltrada(), function (instituicaoEnsino) {
                 var string = instituicaoEnsino.nome().toLowerCase().indexOf(filter) >= 0;
                 instituicaoEnsino.estadoMarcador(string);
                 return string;
