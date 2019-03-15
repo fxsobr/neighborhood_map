@@ -16,7 +16,7 @@
             <div class="input-group-prepend">
                 <span class="input-group-text" id="inputGroup-sizing-default">Buscar</span>
             </div>
-            <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" data-bind="textInput: consultaInstituicao, valueUpdate: 'afterkeyup'">
+            <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" data-bind="textInput: consultaInstituicao, valueUpdate: 'afterkeyup'"/>
         </div>
         <hr/>
         <div class="list-group list-group-flush" data-bind="foreach: filtraInstituicoes">
@@ -26,27 +26,28 @@
     <div id="page-content-wrapper">
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-            <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
-
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+            <button class="btn btn-primary" id="menu-toggle"><span class="navbar-toggler-icon"></span></button>
         </nav>
 
         <div class="container-fluid">
             <div class="mapa" id="map"></div>
         </div>
-    </div>>
+    </div>
 
 </div>
 <script src="assets/js/libs/knockout-3.5.0.js"></script>
 <script src="assets/js/libs/jquery-3.3.1.min.js"></script>
 <script src="assets/js/libs/bootstrap.min.js"></script>
 <script src="assets/js/mapa.js"></script>
+<script src="assets/js/instituicoes_ensino.js"></script>
+<script src="assets/js/estilo_mapa.js"></script>
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsXxmPih6jRZbZRmgcV1c1pswCXODBGuc&v=3&callback=inicializaMapa">
+        src="https://maps.googleapis.com/mapss/api/js?key=AIzaSyAsXxmPih6jRZbZRmgcV1c1pswCXODBGuc&v=3&callback=inicializaMapa">
 </script>
 <script>
+    $( document).ready(function () {
+        $("#wrapper").toggleClass("toggled");
+    });
     $("#menu-toggle").click(function(e) {
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");

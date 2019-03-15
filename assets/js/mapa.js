@@ -1,13 +1,5 @@
-var instituicoesEnsino = [
-    {nome: 'Centro Universitário para o Desenvolvimento do Alto Vale do Itajaí', lat: -27.2089202, lng: -49.646385},
-    {nome: 'Colégio Sinodal Ruy Barbosa', lat: -27.2226135, lng: -49.6496359},
-    {nome: 'Instituto Maria Auxiliadora', lat: -27.2172692, lng: -49.6447687},
-    {nome: 'Colégio Dom Bosco', lat: -27.2149077, lng: -49.6458046}
-];
-
 var mapa;
-var FOURSQUARE_CLIENT_ID = 'XEODQMYLJUKI3EJXIRTAB1QHULHXA0JPRK01Z203FBG2URVL';
-var FOURSQUARE_CLIENT_SECRET = 'GAN1OO1HN4R14U4XAQ1U1P3WIKAZQ233L0POZJEOZR2EIIPP';
+var CLIMA_TEMPO_TOKEN = 'bae772a8c76b488cd2b8971dc5a7e0c8';
 
 var Mapas = function (data) {
   var self = this;
@@ -15,9 +7,26 @@ var Mapas = function (data) {
   this.nome = ko.observable(data.nome);
   this.lat = ko.observable(data.lat);
   this.lng = ko.observable(data.lng);
-  this.endereco = ko.observable('');
-
   this.estadoMarcador = ko.observable(true);
+  this.condicaoTempo = ko.observable();
+  this.temperatura = ko.observable();
+
+    var climatempoURL = 'http://apiadvisor.climatempo.com.br/api/v1/weather/locale/4818/current?token='+ CLIMA_TEMPO_TOKEN +'';
+    ko.computed(function() {
+        $.ajax(climatempoURL, {
+            success: function (data) {
+                var resultado = data.data;
+                self.condicaoTempo = resultado.condition;
+                self.temperatura = resultado.temperature;
+            }
+        }).done(function () {
+            self.conteudoInformacaoEscola = "<h5>" + self.nome() +"</h5><br/>" +
+                                            "<p style='font-size: 18px'>" + self.condicaoTempo +"</p>" +
+                                            "<p style='font-size: 18px'>" + "Temperatura: "+ self.temperatura + " Graus"+"</p>";
+        }).fail(function () {
+            alert("erro")
+        });
+    }, this);
 
   this.marcador = new google.maps.Marker({
       position: new google.maps.LatLng(data.lat, data.lng),
@@ -26,9 +35,8 @@ var Mapas = function (data) {
       animation: google.maps.Animation.DROP
   });
 
-  this.conteudoInformacaoEscola = "<p>" + data.nome + "</p>";
-  this.informacaoEscola = new google.maps.InfoWindow({content: self.conteudoInformacaoEscola});
 
+  this.informacaoEscola = new google.maps.InfoWindow({content: self.conteudoInformacaoEscola});
 
   this.marcador.addListener('click', function () {
       self.informacaoEscola.setContent(self.conteudoInformacaoEscola);
@@ -44,24 +52,16 @@ var Mapas = function (data) {
         return true;
     }, this);
 
-
-    var foursquareAPI = 'https://api.foursquare.com/v2/venues/explore?client_id='+ FOURSQUARE_CLIENT_ID +'&client_secret='+ FOURSQUARE_CLIENT_SECRET +'' +
-        '&v=20180323&limit=1&ll='+ this.lat() +','+ this.lng() +'&query='+ self.nome() +'';
-    $.getJSON(foursquareAPI, function (data) {
-        var resultado = data.response;
-        console.log(resultado);
-
-    })
-
-
 };
+
 
 function MapaViewModel() {
     var self = this;
 
     mapa = new google.maps.Map(document.getElementById('map'), {
         center: {lat: -27.2180696, lng: -49.6450662},
-        zoom: 15
+        zoom: 15,
+        styles: styles
     });
 
     this.listaInstituicoesEnsino = ko.observableArray([]);
@@ -93,9 +93,11 @@ function MapaViewModel() {
     this.instituicaoEnsinoSelecionada = ko.observable(this.listaInstituicoesEnsino()[0]);
     this.setInstituicaoEnsino = function (instituicaoEnsino) {
         google.maps.event.trigger(instituicaoEnsino.marcador, 'click');
-    }
+    };
+
 }
 
 function inicializaMapa() {
-    ko.applyBindings(new MapaViewModel());
+    ko.applyBindings(
+        new MapaViewModel());
 }
