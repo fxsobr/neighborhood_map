@@ -9,6 +9,5 @@ Depois, você vai adicionar recursos a esse mapa, incluindo locais em destaque, 
 - Baixar ou clonar os arquivos desse repositório [neighborhood](https://github.com/fxsobr/neighborhood_map)
 
 ### Rodando a aplicação
-- Entrar no diretório vagrant dentro da máquina virtual e acessar a pasta catalog, rodar o arquivo app.py utilizando o comando:
-> python app.py
-- O servidor roda na porta 5050, lembre-se de inserir as configurações no arquivo VagrantFile
+- Entrar na pasta neighborhood, e abrir o seguinte arquivo:
+> index.html
