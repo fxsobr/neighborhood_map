@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Caminhos do Alto Vale</title>
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="assets/css/mapa.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<div class="d-flex" id="wrapper">
+    <div class="bg-light border-right" id="sidebar-wrapper">
+        <img class="logo" src="assets/img/logo.png"/>
+        <div class="sidebar-heading font-weight-bold text-center">Instituições de Ensino</div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">Buscar</span>
+            </div>
+            <input type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default" data-bind="textInput: consultaInstituicao, valueUpdate: 'afterkeyup'">
+        </div>
+        <hr/>
+        <div class="list-group list-group-flush" data-bind="foreach: filtraInstituicoes">
+            <li class="list-group-item list-group-item-action bg-light" data-bind="text: nome, click: $parent.setInstituicaoEnsino"></li>
+        </div>
+    </div>
+    <div id="page-content-wrapper">
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+            <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </nav>
+
+        <div class="container-fluid">
+            <div class="mapa" id="map"></div>
+        </div>
+    </div>>
+
+</div>
+<script src="assets/js/libs/knockout-3.5.0.js"></script>
+<script src="assets/js/libs/jquery-3.3.1.min.js"></script>
+<script src="assets/js/libs/bootstrap.min.js"></script>
+<script src="assets/js/mapa.js"></script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsXxmPih6jRZbZRmgcV1c1pswCXODBGuc&v=3&callback=inicializaMapa">
+</script>
+<script>
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+</script>
+</body>
+</html>
