@@ -11,6 +11,7 @@
 <div class="d-flex" id="wrapper">
     <div class="bg-light border-right" id="sidebar-wrapper">
         <img class="logo" src="assets/img/logo.png"/>
+        <div class="font-weight-bold text-center">Powered by: <a href="https://openweathermap.org">OpenWeatherMap</a> </div>
         <div class="sidebar-heading font-weight-bold text-center">Instituições de Ensino</div>
         <div class="input-group mb-3">
             <div class="input-group-prepend">
@@ -42,7 +43,7 @@
 <script src="assets/js/instituicoes_ensino.js"></script>
 <script src="assets/js/estilo_mapa.js"></script>
 <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsXxmPih6jRZbZRmgcV1c1pswCXODBGuc&v=3&callback=inicializaMapa">
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAsXxmPih6jRZbZRmgcV1c1pswCXODBGuc&v=3&callback=inicializaMapa" onerror="erroGoogleMaps()">
 </script>
 <script>
     $( document).ready(function () {

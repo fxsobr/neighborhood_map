@@ -27,5 +27,20 @@ var instituicoesEnsino = [
         nome: 'Eeb Paulo Cordeiro',
         lat: -27.2314133,
         lng: -49.6476378
+    },
+    {
+        nome: 'Eeb Maria Regina De Oliveira',
+        lat: -27.2720522,
+        lng: -49.7070239
+    },
+    {
+        nome: 'Eeb Tereza Cristina',
+        lat: -27.2024099,
+        lng: -49.7343348
+    },
+    {
+        nome: 'Escola de Educação Básica Regente Feijó',
+        lat: -27.1752564,
+        lng: -49.5323621
     }
 ];
